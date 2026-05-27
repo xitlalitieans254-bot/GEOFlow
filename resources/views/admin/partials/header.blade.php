@@ -104,15 +104,17 @@
         $resolvedActive = $subMap[$routeName];
     }
 @endphp
-<nav class="bg-white shadow-sm border-b">
+<nav class="bg-[#0B1223]/75 backdrop-blur-md border-b border-white/5 sticky top-0 z-50 shadow-[0_4px_30px_rgba(0,0,0,0.4)]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center gap-3 lg:gap-4 min-w-0">
-            <a href="{{ route('admin.dashboard') }}" class="shrink-0 text-lg sm:text-xl font-semibold text-gray-900">{{ $adminBrandName }}</a>
-            <nav class="hidden md:flex flex-1 min-w-0 items-center">
+            <!-- Neon Cyan Futuristic Brand Title -->
+            <a href="{{ route('admin.dashboard') }}" class="shrink-0 text-lg sm:text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#00f2fe] to-[#7f00ff] font-tech tracking-widest glow-text-cyan transition-all duration-300 hover:opacity-85">{{ $adminBrandName }}</a>
+            
+            <nav class="hidden md:flex flex-1 min-w-0 items-center ml-4">
                 <div class="flex w-full min-w-0 items-center gap-3 lg:gap-5 overflow-x-auto overscroll-x-contain py-2 -my-2 [scrollbar-width:thin]">
                     @foreach ($menu as $key => $item)
                         <a href="{{ route($item['route']) }}"
-                           class="@if($resolvedActive === $key) text-blue-600 font-medium @else text-gray-500 hover:text-gray-700 @endif shrink-0 whitespace-nowrap text-[15px] transition-colors duration-200">
+                           class="@if($resolvedActive === $key) text-[#00f2fe] font-semibold border-b-2 border-[#00f2fe] pb-1 @else text-gray-400 hover:text-gray-200 border-b-2 border-transparent hover:border-white/10 pb-1 @endif shrink-0 whitespace-nowrap text-[15px] transition-all duration-200">
                             {{ $item['name'] }}
                         </a>
                     @endforeach
@@ -120,43 +122,44 @@
             </nav>
             <div class="flex shrink-0 items-center gap-2 sm:gap-3 ml-auto">
                 <div class="relative">
-                    <button onclick="toggleAdminNotifications()" class="relative rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors duration-200" type="button" aria-label="{{ __('admin.header.notifications.label') }}" title="{{ __('admin.header.notifications.label') }}">
+                    <button onclick="toggleAdminNotifications()" class="relative rounded-full p-2 text-gray-400 hover:bg-white/5 hover:text-white transition-colors duration-200" type="button" aria-label="{{ __('admin.header.notifications.label') }}" title="{{ __('admin.header.notifications.label') }}">
                         <i data-lucide="bell" class="w-5 h-5"></i>
                         @if($hasVersionUpdate)
-                            <span data-update-indicator class="absolute right-1.5 top-1.5 h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-white"></span>
+                            <span data-update-indicator class="absolute right-1.5 top-1.5 h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-[#0B1223]"></span>
                         @endif
                     </button>
 
-                    <div id="admin-notification-menu" class="hidden absolute right-0 mt-3 w-80 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl z-50">
-                        <div class="border-b border-gray-100 px-4 py-3">
+                    <!-- Glassmorphic Cyber Notification Drawer -->
+                    <div id="admin-notification-menu" class="hidden absolute right-0 mt-3 w-80 overflow-hidden rounded-2xl border border-white/10 bg-[#0B1223]/95 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-50">
+                        <div class="border-b border-white/5 px-4 py-3 bg-white/5">
                             <div class="flex items-center justify-between gap-3">
-                                <div class="text-sm font-semibold text-gray-900">{{ __('admin.header.notifications.title') }}</div>
+                                <div class="text-sm font-semibold text-white">{{ __('admin.header.notifications.title') }}</div>
                                 @if($hasVersionUpdate)
-                                    <span class="inline-flex items-center rounded-full bg-red-50 px-2 py-0.5 text-xs font-medium text-red-600">{{ __('admin.header.notifications.badge_new') }}</span>
+                                    <span class="inline-flex items-center rounded-full bg-red-500/10 px-2 py-0.5 text-xs font-medium text-red-400 border border-red-500/20">{{ __('admin.header.notifications.badge_new') }}</span>
                                 @endif
                             </div>
                         </div>
                         <div class="px-4 py-4">
                             @if($hasVersionUpdate)
-                                <div class="text-sm font-semibold text-gray-900">
+                                <div class="text-sm font-semibold text-white">
                                     {{ __('admin.header.notifications.update_available', ['version' => (string) ($updateState['latest_version'] ?? '')]) }}
                                 </div>
-                                <p class="mt-2 text-sm leading-6 text-gray-600">{{ __('admin.header.notifications.update_desc') }}</p>
+                                <p class="mt-2 text-sm leading-6 text-gray-400">{{ __('admin.header.notifications.update_desc') }}</p>
                                 @if($updateSummary !== '')
-                                    <p class="mt-2 text-sm leading-6 text-gray-600">{{ $updateSummary }}</p>
+                                    <p class="mt-2 text-sm leading-6 text-gray-400">{{ $updateSummary }}</p>
                                 @endif
                             @elseif($notificationStatus === 'current')
-                                <div class="text-sm font-semibold text-gray-900">{{ __('admin.header.notifications.up_to_date') }}</div>
-                                <p class="mt-2 text-sm leading-6 text-gray-600">{{ __('admin.header.notifications.no_update_desc') }}</p>
+                                <div class="text-sm font-semibold text-white">{{ __('admin.header.notifications.up_to_date') }}</div>
+                                <p class="mt-2 text-sm leading-6 text-gray-400">{{ __('admin.header.notifications.no_update_desc') }}</p>
                             @elseif($notificationStatus === 'disabled')
-                                <div class="text-sm font-semibold text-gray-900">{{ __('admin.header.notifications.disabled') }}</div>
-                                <p class="mt-2 text-sm leading-6 text-gray-600">{{ __('admin.header.notifications.disabled_desc') }}</p>
+                                <div class="text-sm font-semibold text-white">{{ __('admin.header.notifications.disabled') }}</div>
+                                <p class="mt-2 text-sm leading-6 text-gray-400">{{ __('admin.header.notifications.disabled_desc') }}</p>
                             @else
-                                <div class="text-sm font-semibold text-gray-900">{{ __('admin.header.notifications.unavailable') }}</div>
-                                <p class="mt-2 text-sm leading-6 text-gray-600">{{ __('admin.header.notifications.unavailable_desc') }}</p>
+                                <div class="text-sm font-semibold text-white">{{ __('admin.header.notifications.unavailable') }}</div>
+                                <p class="mt-2 text-sm leading-6 text-gray-400">{{ __('admin.header.notifications.unavailable_desc') }}</p>
                             @endif
 
-                            <div class="mt-4 space-y-1 rounded-xl bg-gray-50 px-3 py-3 text-xs text-gray-500">
+                            <div class="mt-4 space-y-1 rounded-xl bg-white/5 border border-white/5 px-3 py-3 text-xs text-gray-400">
                                 <div>{{ __('admin.header.notifications.current_version', ['version' => (string) ($updateState['current_version'] ?? config('geoflow.app_version', '2.0'))]) }}</div>
                                 @if(!empty($updateState['latest_version']))
                                     <div>{{ __('admin.header.notifications.latest_version', ['version' => (string) $updateState['latest_version']]) }}</div>
@@ -168,70 +171,74 @@
                             </div>
 
                             <div class="mt-4 flex flex-wrap gap-2">
-                                <a href="{{ $notificationChangelogUrl }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center rounded-lg bg-blue-600 px-3 py-2 text-xs font-medium text-white hover:bg-blue-700">
+                                <a href="{{ $notificationChangelogUrl }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center rounded-lg bg-gradient-to-r from-[#7f00ff] to-[#00f2fe] px-3 py-2 text-xs font-semibold text-white hover:opacity-90">
                                     {{ __('admin.header.notifications.view_changelog') }}
                                 </a>
-                                <a href="{{ $notificationGithubUrl }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center rounded-lg border border-gray-200 px-3 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50">
+                                <a href="{{ $notificationGithubUrl }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-gray-300 hover:bg-white/10 hover:text-white">
                                     {{ __('admin.header.notifications.open_github') }}
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="hidden md:flex items-center rounded-lg border border-gray-200 bg-white px-2 py-1 shadow-sm">
+                
+                <!-- Cyber language dropdown selector -->
+                <div class="hidden md:flex items-center rounded-lg border border-white/10 bg-[#0B1223]/80 px-2 py-1 shadow-sm">
                     <i data-lucide="languages" class="w-4 h-4 text-gray-400 mr-1.5"></i>
                     <select
-                        class="admin-locale-select appearance-none bg-transparent pr-5 text-sm font-medium text-gray-700 outline-none cursor-pointer"
+                        class="admin-locale-select appearance-none bg-transparent pr-5 text-sm font-medium text-gray-300 outline-none cursor-pointer"
                         aria-label="{{ __('admin.header.language') }}"
                         onchange="if (this.value) window.location.href = this.value"
                     >
                         @foreach (\App\Support\AdminWeb::supportedLocales() as $localeCode => $localeLabel)
-                            <option value="{{ route('admin.locale.switch', ['locale' => $localeCode]) }}" @selected(app()->getLocale() === $localeCode)>
+                            <option value="{{ route('admin.locale.switch', ['locale' => $localeCode]) }}" @selected(app()->getLocale() === $localeCode) class="bg-[#0B1223]">
                                 {{ $localeLabel }}
                             </option>
                         @endforeach
                     </select>
                 </div>
+                
                 <div class="relative">
-                    <button onclick="toggleUserMenu()" class="flex items-center space-x-1 text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200" type="button">
-                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                            <i data-lucide="user" class="w-4 h-4 text-blue-600"></i>
+                    <button onclick="toggleUserMenu()" class="flex items-center space-x-1 text-sm text-gray-300 hover:text-white transition-colors duration-200" type="button">
+                        <div class="w-8 h-8 bg-gradient-to-tr from-[#7f00ff] to-[#00f2fe] rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(0,242,254,0.3)]">
+                            <i data-lucide="user" class="w-4 h-4 text-white"></i>
                         </div>
-                        <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400"></i>
                     </button>
 
-                    <div id="user-menu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg py-1 z-50">
-                        <div class="px-4 py-2 border-b border-gray-100">
-                            <div class="text-sm text-gray-700">{{ __('admin.header.welcome', ['name' => $currentAdmin->username ?? '']) }}</div>
-                            <div class="text-xs text-gray-400">{{ $adminRoleLabel }}</div>
+                    <!-- Glassmorphic User Dropdown Panel -->
+                    <div id="user-menu" class="hidden absolute right-0 mt-2 w-56 bg-[#0B1223]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] py-1 z-50">
+                        <div class="px-4 py-2 border-b border-white/5 bg-white/5">
+                            <div class="text-sm font-semibold text-white">{{ __('admin.header.welcome', ['name' => $currentAdmin->username ?? '']) }}</div>
+                            <div class="text-xs text-[#00f2fe] font-semibold tracking-wider font-tech mt-0.5">{{ $adminRoleLabel }}</div>
                         </div>
-                        <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                            <i data-lucide="home" class="w-4 h-4 inline mr-2"></i>
+                        <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white">
+                            <i data-lucide="home" class="w-4 h-4 inline mr-2 text-gray-400"></i>
                             {{ __('admin.nav.back_home') }}
                         </a>
-                        <a href="{{ route('admin.site-settings.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                            <i data-lucide="settings" class="w-4 h-4 inline mr-2"></i>
+                        <a href="{{ route('admin.site-settings.index') }}" class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white">
+                            <i data-lucide="settings" class="w-4 h-4 inline mr-2 text-gray-400"></i>
                             {{ __('admin.nav.system_settings') }}
                         </a>
                         @if ($isSuperAdmin)
-                            <a href="{{ route('admin.admin-users.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                <i data-lucide="users" class="w-4 h-4 inline mr-2"></i>
+                            <a href="{{ route('admin.admin-users.index') }}" class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white">
+                                <i data-lucide="users" class="w-4 h-4 inline mr-2 text-gray-400"></i>
                                 {{ __('admin.nav.admin_management') }}
                             </a>
-                            <a href="{{ route('admin.admin-activity-logs') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                <i data-lucide="clipboard-list" class="w-4 h-4 inline mr-2"></i>
+                            <a href="{{ route('admin.admin-activity-logs') }}" class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white">
+                                <i data-lucide="clipboard-list" class="w-4 h-4 inline mr-2 text-gray-400"></i>
                                 {{ __('admin.nav.activity_logs') }}
                             </a>
-                            <a href="{{ route('admin.api-tokens.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                <i data-lucide="key-round" class="w-4 h-4 inline mr-2"></i>
+                            <a href="{{ route('admin.api-tokens.index') }}" class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white">
+                                <i data-lucide="key-round" class="w-4 h-4 inline mr-2 text-gray-400"></i>
                                 {{ __('admin.nav.api_tokens') }}
                             </a>
                         @endif
-                        <div class="border-t border-gray-100"></div>
+                        <div class="border-t border-white/5"></div>
                         <form method="POST" action="{{ route('admin.logout') }}">
                             @csrf
-                            <button type="submit" class="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
-                                <i data-lucide="log-out" class="w-4 h-4 inline mr-2"></i>
+                            <button type="submit" class="w-full text-left block px-4 py-2 text-sm text-red-400 hover:bg-white/5">
+                                <i data-lucide="log-out" class="w-4 h-4 inline mr-2 text-red-400"></i>
                                 {{ __('admin.button.logout') }}
                             </button>
                         </form>
