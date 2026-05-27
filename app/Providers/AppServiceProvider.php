@@ -35,6 +35,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if ($this->app->environment('production')) {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+
         Http::globalMiddleware(OutboundHttpProxy::middleware());
 
         View::composer(['site.layout', 'theme.*.layout'], SiteLayoutComposer::class);
